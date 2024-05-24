@@ -33,6 +33,10 @@ class faceDetector:
         self.mp_face_mesh = mp.solutions.face_mesh
         self.face_mesh = self.mp_face_mesh.FaceMesh(self.mode, self.num_face, self.refine, self.minConDetection,self.face_mesh)
     
+    def findLandMark(self,img, draw = False):
+        imgRGB = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+        self.result = self.face_mesh.process(imgRGB)
+        pass
 
      
 capture = cv.VideoCapture(0)
