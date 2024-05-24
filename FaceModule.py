@@ -24,9 +24,16 @@ class FaceAngle(AngleCalculationScenario):
         return super().calculate_angle(img, lmlist)
     
 class faceDetector:
-    def __init__(self,mode=False,num_face=1,refine_landmarks=False,detectionCon=0.5,trackCon=0.5) -> None:
-        
-        pass
+    def __init__(self,mode=False,num_face=1,refine_landmarks=False,detectionCon=0.5,trackCon=0.5):
+        self.mode = mode
+        self.num_face = num_face
+        self.refine = refine_landmarks
+        self.minConDetection =  detectionCon
+        self.minConTracking = trackCon
+        self.mp_face_mesh = mp.solutions.face_mesh
+        self.face_mesh = self.mp_face_mesh.FaceMesh(self.mode, self.num_face, self.refine, self.minConDetection,self.face_mesh)
+    
+
      
 capture = cv.VideoCapture(0)
 while True:
