@@ -32,13 +32,18 @@ class faceDetector:
         self.minConTracking = trackCon
         self.mp_face_mesh = mp.solutions.face_mesh
         self.face_mesh = self.mp_face_mesh.FaceMesh(self.mode, self.num_face, self.refine, self.minConDetection)
+
+        self.mp_draw = mp.solutions.drawing_utils
     
-    def findLandMark(self,img):
+    def findLandMark(self,img, draw = False):
         imgRGB = cv.cvtColor(img, cv.COLOR_BGR2RGB)
         self.result = self.face_mesh.process(imgRGB)
         # multi_face_landmarks have the attribute landmark (I don't see it the documentary but it has it)
         # The index 0 is for the number of face (1 in this case), landmark[index] is the index number landmark point (see all points visualization on mediapipe web)
         landmark = self.result.multi_face_landmarks[0].landmark
+        if draw:
+            self.mp_draw.draw_landmarks(img,self.result.multi_face_landmarks[0],self.mp_face_mesh.FACEMESH_TESSELATION)
+
         return landmark
 
      
