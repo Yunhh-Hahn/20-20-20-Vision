@@ -36,7 +36,9 @@ class faceDetector:
     def findLandMark(self,img):
         imgRGB = cv.cvtColor(img, cv.COLOR_BGR2RGB)
         self.result = self.face_mesh.process(imgRGB)
-        landmark = self.result.multi_face_landmarks[0].landmark[0]
-        return landmark, self.result
+        # multi_face_landmarks have the attribute landmark (I don't see it the documentary but it has it)
+        # The index 0 is for the number of face (1 in this case), landmark[index] is the index number landmark point (see all points visualization on mediapipe web)
+        landmark = self.result.multi_face_landmarks[0].landmark
+        return landmark
 
      
