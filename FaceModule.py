@@ -31,17 +31,12 @@ class faceDetector:
         self.minConDetection =  detectionCon
         self.minConTracking = trackCon
         self.mp_face_mesh = mp.solutions.face_mesh
-        self.face_mesh = self.mp_face_mesh.FaceMesh(self.mode, self.num_face, self.refine, self.minConDetection,self.face_mesh)
+        self.face_mesh = self.mp_face_mesh.FaceMesh(self.mode, self.num_face, self.refine, self.minConDetection)
     
-    def findLandMark(self,img, draw = False):
+    def findLandMark(self,img):
         imgRGB = cv.cvtColor(img, cv.COLOR_BGR2RGB)
         self.result = self.face_mesh.process(imgRGB)
-        pass
+        landmark = self.result.multi_face_landmarks[0].landmark[0]
+        return landmark, self.result
 
      
-capture = cv.VideoCapture(0)
-while True:
-    success, img = capture.read()
-    if not success:
-        break
-    mp.solutions.face_mesh.FaceMesh()
