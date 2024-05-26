@@ -44,7 +44,8 @@ class faceDetector:
         return landmarks
     
     def drawLandmarks(self,img,lmList,landmarks, num_face = 1,draw_all = False):
-        # Multi_face_landmark
+        get_pixel_coordinates = self.mp_draw._normalized_to_pixel_coordinates
+        # Multi_face_landmark can detect multiple face and put into an array with each index a face
         num__face_index = num_face - 1
         if draw_all:
             self.mp_draw.draw_landmarks(img,self.result.multi_face_landmarks[num__face_index],self.mp_face_mesh.FACEMESH_TESSELATION)
@@ -52,9 +53,30 @@ class faceDetector:
         h,w,c = img.shape
         for lmIndex,lm in enumerate(landmarks):
             if lmIndex in lmList:
-                cx, cy = int(lm.x*w), int(lm.y*h)
-                cv.circle(img, (cx,cy) , 2, (255,0,0), cv.FILLED)
+                # landmark_x = lm.x * w
+                # landmark_y = lm.y * h
+                # landmark_z = lm.z * w #documentary said so according to the tutorial guy, don't fuckin see it in the documentary though
+                pixel_cor = get_pixel_coordinates(lm.x,lm.y,w,h)
+                cv.circle(img, pixel_cor , 2, (255,0,0), cv.FILLED)
 
+class BlinkingDetector():
+    def distance(point1,point2):
+        dist = sum( [ (i-j)**2 for i,j in zip(point1,point2) ] ) **0.5
+        return dist
+        '''
+            Formula:
+            distance between two point or the norm of a vector = √ x^2 + y^2 + ... (depend on dimension) 
+            Simplified:
+            sum = 0
+            for i in range (len(point1)):
+                sum+= (point1[i] -point2[i])**2
+            distance = sum ** 0.5
+
+            Remember it is point with cor so we subtract it to get vector
+            zip allows for multi array looping link using index number between array
+            sum function take all value within an array and get the sum of all value
+            ==> Loop inside each array to get x_cor, y_cor --> square each value--> put inside a list --> sum function --> square root 
+        '''
 
 
 
