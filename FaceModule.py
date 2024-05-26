@@ -40,6 +40,8 @@ class faceDetector:
         self.result = self.face_mesh.process(imgRGB)
         # multi_face_landmarks have the attribute landmark (I don't see it the documentary but it has it)
         # The index 0 is for the number of face (1 in this case), landmark[index] is the index number landmark point (see all points visualization on mediapipe web)
+        
+        # Reminder to create the exception in the case that the model didn't managed to detect a face
         landmarksList = self.result.multi_face_landmarks[0].landmark
         return landmarksList
     
@@ -60,7 +62,7 @@ class faceDetector:
                 cv.circle(img, pixel_cor , 2, (255,0,0), cv.FILLED)
 
 class BlinkingDetector():
-    def distance(point1,point2):
+    def distance(self,point1,point2):
         dist = sum( [ (i-j)**2 for i,j in zip(point1,point2) ] ) **0.5
         return dist
         '''
@@ -77,7 +79,45 @@ class BlinkingDetector():
             sum function take all value within an array and get the sum of all value
             ==> Loop inside each array to get x_cor, y_cor --> square each value--> put inside a list --> sum function --> square root 
         '''
-    def getEAR(landmarksList,):
+    def getEAR(self,lmList,targetLandmarksList, frame_width, frame_height):
+        get_pixel_coordinates = mp.solutions.drawing_utils._normalized_to_pixel_coordinates
+        """
+        Calculate Eye Aspect Ratio for one eye.
+
+        Args:
+            landmarksList: (list) Detected landmarks list
+            targetLandmarksList: (list) Index positions of the chosen landmarks
+                                in order P1, P2, P3, P4, P5, P6
+            frame_width: (int) Width of captured frame
+            frame_height: (int) Height of captured frame
+
+        Returns:
+            ear: (float) Eye aspect ratio
+        """
+        try:
+        # Get the distance of needed point
+            coords_points = []
+            for i in targetLandmarksList:
+                lm = lmList[i]
+                cor = get_pixel_coordinates(lm.x,lm.y,frame_width,frame_height)
+                coords_points.append(cor)
+
+            P2_P6 = self.distance(coords_points[1], coords_points[5])
+            P3_P5 = self.distance(coords_points[2], coords_points[4])
+            P1_P4 = self.distance(coords_points[0], coords_points[3])
+
+            EAR = (P2_P6 + P3_P5) / (2.0*(P1_P4)) 
+        except:
+            EAR = 0.0
+            coords_points = None
+        return EAR, coords_points
+
+    def calculate_average_EAR(self,lmList,left_eye_lmList,right_eye_lmList,frame_width,frame_height):
+        left_EAR, left_lm_cor = self.getEAR(lmList,left_eye_lmList,frame_width,frame_height)
+        right_EAR, right_lm_cor = self.getEAR(lmList,right_eye_lmList,frame_width,frame_height)
+        Avg_EAR = (left_EAR+right_EAR) / 2.0
+        return Avg_EAR, (left_lm_cor,right_lm_cor)
+
 
 
 
