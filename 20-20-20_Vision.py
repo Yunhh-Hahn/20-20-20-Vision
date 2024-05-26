@@ -1,6 +1,9 @@
 import FaceModule as Fm
 import cv2 as cv
 
+chosen_left_eye_lmList  = [362, 385, 387, 263, 373, 380]
+chosen_right_eye_lmList = [33,  160, 158, 133, 153, 144]
+all_chosen_eye_lmList = chosen_left_eye_lmList + chosen_right_eye_lmList
 
 # capture = cv.VideoCapture(0)
 # while True:
@@ -14,9 +17,9 @@ h, w, c = img.shape
 #You have to declare detector first to activate the init and the "self" and the default value you put in the FaceModule
 #Without it, it won't have the argument to put in the place of the parameter self
 detector = Fm.faceDetector()
-landmark = detector.findLandMark(img=img,draw=True)
-cv.imshow("test",img)
-cv.waitKey(0)
+landmark = detector.findLandMark(img=img)
+# cv.imshow("test",img)
+# cv.waitKey(0)
 # landmark_x = landmark.x * w
 # landmark_y = landmark.y * h
 # landmark_z = landmark.z * w #documentary said so according to the tutorial guy, don't fuckin see it in the documentary though
