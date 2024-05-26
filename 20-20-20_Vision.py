@@ -17,7 +17,7 @@ h, w, c = img.shape
 #You have to declare detector first to activate the init and the "self" and the default value you put in the FaceModule
 #Without it, it won't have the argument to put in the place of the parameter self
 detector = Fm.faceDetector()
-landmarks = detector.findLandMarks(img=img)
+landmarksList = detector.findLandMarks(img=img)
 #detector.drawLandmarks(img,all_chosen_eye_lmList,landmarks) 
 # cv.imshow("test",img)
 # cv.waitKey(0)

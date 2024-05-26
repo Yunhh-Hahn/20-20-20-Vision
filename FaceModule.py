@@ -40,8 +40,8 @@ class faceDetector:
         self.result = self.face_mesh.process(imgRGB)
         # multi_face_landmarks have the attribute landmark (I don't see it the documentary but it has it)
         # The index 0 is for the number of face (1 in this case), landmark[index] is the index number landmark point (see all points visualization on mediapipe web)
-        landmarks = self.result.multi_face_landmarks[0].landmark
-        return landmarks
+        landmarksList = self.result.multi_face_landmarks[0].landmark
+        return landmarksList
     
     def drawLandmarks(self,img,lmList,landmarks, num_face = 1,draw_all = False):
         get_pixel_coordinates = self.mp_draw._normalized_to_pixel_coordinates
@@ -77,6 +77,7 @@ class BlinkingDetector():
             sum function take all value within an array and get the sum of all value
             ==> Loop inside each array to get x_cor, y_cor --> square each value--> put inside a list --> sum function --> square root 
         '''
+    def getEAR(landmarksList,):
 
 
 
