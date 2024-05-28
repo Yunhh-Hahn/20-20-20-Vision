@@ -24,7 +24,7 @@ class FaceAngle(AngleCalculationScenario):
         return super().calculate_angle(img, lmlist)
     
 class faceDetector:
-    def __init__(self,mode=False,num_face=1,refine_landmarks=False,detectionCon=0.5,trackCon=0.5):
+    def __init__(self,mode=False,num_face=1,refine_landmarks=True,detectionCon=0.5,trackCon=0.5):
         self.mode = mode
         self.num_face = num_face
         self.refine = refine_landmarks
@@ -59,7 +59,7 @@ class faceDetector:
                 # landmark_y = lm.y * h
                 # landmark_z = lm.z * w #documentary said so according to the tutorial guy, don't fuckin see it in the documentary though
                 pixel_cor = get_pixel_coordinates(lm.x,lm.y,w,h)
-                cv.circle(img, pixel_cor , 2, (255,0,0), cv.FILLED)
+                cv.circle(img, pixel_cor , 2, (0,0,255), cv.FILLED)
 
 class BlinkingDetector():
     def distance(self,point1,point2):
@@ -117,6 +117,17 @@ class BlinkingDetector():
         right_EAR, right_lm_cor = self.getEAR(lmList,right_eye_lmList,frame_width,frame_height)
         Avg_EAR = (left_EAR+right_EAR) / 2.0
         return Avg_EAR, (left_lm_cor,right_lm_cor)
+    
+    def getCoordinate(self,lmList,targetLandmarksList, frame_width, frame_height):
+        get_pixel_coordinates = mp.solutions.drawing_utils._normalized_to_pixel_coordinates
+        # Get the distance of needed point
+        coords_points = []
+        for i in targetLandmarksList:
+            lm = lmList[i]
+            cor = get_pixel_coordinates(lm.x,lm.y,frame_width,frame_height)
+            coords_points.append(cor)
+        return coords_points
+
 
 
 
