@@ -1,7 +1,6 @@
 import math
 import numpy as np
 import cv2
-from .pupil import Pupil
 
 
 class Eye(object):
@@ -17,7 +16,6 @@ class Eye(object):
         self.frame = None
         self.origin = None
         self.center = None
-        self.pupil = None
         self.landmark_points = None
 
         self._analyze(original_frame, landmarks, side, calibration)
@@ -116,4 +114,3 @@ class Eye(object):
             calibration.evaluate(self.frame, side)
 
         threshold = calibration.threshold(side)
-        self.pupil = Pupil(self.frame, threshold)
