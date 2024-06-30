@@ -64,32 +64,6 @@ class Eye(object):
         height, width = self.frame.shape[:2]
         self.center = (width / 2, height / 2)
 
-    def _blinking_ratio(self, landmarks, points):
-        """Calculates a ratio that can indicate whether an eye is closed or not.
-        It's the division of the width of the eye, by its height.
-        Note: rework the blinking ratio
-        Arguments:
-            landmarks (dlib.full_object_detection): Facial landmarks for the face region
-            points (list): Points of an eye (from the 68 Multi-PIE landmarks)
-
-        Returns:
-            The computed ratio
-        """
-        left = (landmarks.part(points[0]).x, landmarks.part(points[0]).y)
-        right = (landmarks.part(points[3]).x, landmarks.part(points[3]).y)
-        top = self._middle_point(landmarks.part(points[1]), landmarks.part(points[2]))
-        bottom = self._middle_point(landmarks.part(points[5]), landmarks.part(points[4]))
-
-        eye_width = math.hypot((left[0] - right[0]), (left[1] - right[1]))
-        eye_height = math.hypot((top[0] - bottom[0]), (top[1] - bottom[1]))
-
-        try:
-            ratio = eye_width / eye_height
-        except ZeroDivisionError:
-            ratio = None
-
-        return ratio
-
     def _analyze(self, original_frame, landmarks, side, calibration):
         """Detects and isolates the eye in a new frame, sends data to the calibration
         and initializes Pupil object.
