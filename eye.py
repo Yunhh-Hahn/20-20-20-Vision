@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import cv2
+import mediapipe as mp
 
 
 class Eye(object):
@@ -8,9 +9,11 @@ class Eye(object):
     This class creates a new frame to isolate the eye and
     initiates the pupil detection.
     """
+    LEFT_EYE_POINTS = list(mp.face_mesh.FACEMESH_LEFT_EYE)
+    LEFT_EYE_POINTS = set(np.ravel(LEFT_EYE_POINTS))
 
-    LEFT_EYE_POINTS = [36, 37, 38, 39, 40, 41]
-    RIGHT_EYE_POINTS = [42, 43, 44, 45, 46, 47]
+    RIGHT_EYE_POINTS = list(mp.face_mesh.FACEMESH_RIGHT_EYE)
+    RIGHT_EYE_POINTS = set(np.ravel(RIGHT_EYE_POINTS))
 
     def __init__(self, original_frame, landmarks, side):
         self.frame = None

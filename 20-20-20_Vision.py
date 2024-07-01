@@ -15,6 +15,7 @@ all_right_iris_point = set(np.ravel(all_right_iris_point))
 # Combined for plotting - landmark points for both iris
 all_iris_point = all_left_iris_point.union(all_right_iris_point)
 all_iris_point = list(all_iris_point)
+# All iris point included pupil also, for some reason it doesn't included in ???
 all_iris_point = [468,469, 470, 471, 472, 473, 474, 475, 476, 477]
 chosen_left_eye_lmList  = [362, 385, 387, 263, 373, 380]
 chosen_right_eye_lmList = [33,  160, 158, 133, 153, 144]
