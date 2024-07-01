@@ -34,17 +34,14 @@ h, w, c = img.shape
 #Without it, it won't have the argument to put in the place of the parameter self
 faceDetector = Fm.faceDetector()
 landmarksList = faceDetector.findLandMarks(img=img)
-print(len(landmarksList))
+
 blinkDetetor = Fm.BlinkingDetector()
 EAR_value, eye_cor = blinkDetetor.calculate_average_EAR(landmarksList,chosen_left_eye_lmList,chosen_right_eye_lmList,w,h)
 print(EAR_value)
-print(eye_cor)
 if EAR_value > 0.2:
     print("Eye is open")
-print(all_chosen_eye_lmList)
-print(all_iris_point)
+
 cor = blinkDetetor.getCoordinate(landmarksList,all_iris_point,w,h)
-print(cor)
 faceDetector.drawLandmarks(img,all_iris_point,landmarksList) 
 cv.imshow("test",img)
 cv.waitKey(0)
