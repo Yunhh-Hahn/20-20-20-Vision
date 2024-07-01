@@ -38,6 +38,7 @@ class Eye(object):
     def _isolate(self, frame, landmarks, points):
         """Isolate an eye, to have a frame without other part of the face.
         Note: this part is needed to calculate origin and center to get the ratio to determine left and right direction (probably not the origin)
+        Note: fix the 
         Arguments:
             frame (numpy.ndarray): Frame containing the face
             landmarks (dlib.full_object_detection): Facial landmarks for the face region

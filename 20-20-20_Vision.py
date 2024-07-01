@@ -1,4 +1,5 @@
 import FaceModule as Fm
+from eye import Eye
 import numpy as np
 from mediapipe import solutions as mp
 import cv2 as cv
@@ -30,6 +31,7 @@ all_chosen_eye_lmList = chosen_left_eye_lmList + chosen_right_eye_lmList
 img = cv.imread("open-eye-asian-man.jpg")
 # height(y), width(x), c: color chanel
 h, w, c = img.shape
+utils = Fm.Utility()
 #You have to declare faceDetector first to activate the init and the "self" and the default value you put in the FaceModule
 #Without it, it won't have the argument to put in the place of the parameter self
 faceDetector = Fm.faceDetector()
@@ -41,7 +43,8 @@ print(EAR_value)
 if EAR_value > 0.2:
     print("Eye is open")
 
-cor = blinkDetetor.getCoordinate(landmarksList,all_iris_point,w,h)
+cor = utils.getCoordinate(landmarksList,all_iris_point,w,h)
+print(cor)
 faceDetector.drawLandmarks(img,all_iris_point,landmarksList) 
 cv.imshow("test",img)
 cv.waitKey(0)

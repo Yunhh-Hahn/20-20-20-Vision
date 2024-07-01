@@ -4,7 +4,7 @@ import math
 
 
     
-class faceDetector:
+class faceDetector():
     def __init__(self,mode=False,num_face=1,refine_landmarks=True,detectionCon=0.5,trackCon=0.5):
         self.mode = mode
         self.num_face = num_face
@@ -108,6 +108,18 @@ class BlinkingDetector():
             cor = get_pixel_coordinates(lm.x,lm.y,frame_width,frame_height)
             coords_points.append(cor)
         return coords_points
+
+class Utility():
+    def getCoordinate(self, lmList, targetLandmarksList, frame_width, frame_height):
+        get_pixel_coordinates = mp.solutions.drawing_utils._normalized_to_pixel_coordinates
+        # Get the distance of needed point
+        coords_points = []
+        for i in targetLandmarksList:
+            lm = lmList[i]
+            cor = get_pixel_coordinates(lm.x,lm.y,frame_width,frame_height)
+            coords_points.append(cor)
+        return coords_points
+
 
 
 
