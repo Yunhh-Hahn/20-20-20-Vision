@@ -110,8 +110,12 @@ class BlinkingDetector():
         return coords_points
 
 class Utility():
+    def __init__(self) -> None:
+        self.mp_face_mesh = mp.solutions.face_mesh
+        self.utils = mp.solutions.drawing_utils
+    
     def getCoordinate(self, lmList, targetLandmarksList, frame_width, frame_height):
-        get_pixel_coordinates = mp.solutions.drawing_utils._normalized_to_pixel_coordinates
+        get_pixel_coordinates = self.utils._normalized_to_pixel_coordinates
         # Get the distance of needed point
         coords_points = []
         for i in targetLandmarksList:
@@ -119,6 +123,15 @@ class Utility():
             cor = get_pixel_coordinates(lm.x,lm.y,frame_width,frame_height)
             coords_points.append(cor)
         return coords_points
+
+    def drawLandmarks(self, img, lmList, targetlandmarksList, num_face = 1, draw_all = False):
+        if draw_all:
+            self.utils.draw_landmarks(img, lmList, self.mp_face_mesh.FACEMESH_TESSLATION)
+            return 
+        h,w,c = img.shape
+        coords_pointsList = self.getCoordinate(lmList, targetlandmarksList, w, h)
+        for coords_point in coords_pointsList:
+            cv.circle(img, coords_point, 2, (0,0,225), cv.FILLED)
 
 
 
