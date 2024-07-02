@@ -26,22 +26,6 @@ class faceDetector():
         landmarksList = self.result.multi_face_landmarks[0].landmark
         return landmarksList
     
-    def drawLandmarks(self,img,lmList,landmarks, num_face = 1,draw_all = False):
-        get_pixel_coordinates = self.mp_draw._normalized_to_pixel_coordinates
-        # Multi_face_landmark can detect multiple face and put into an array with each index a face
-        num__face_index = num_face - 1
-        if draw_all:
-            self.mp_draw.draw_landmarks(img,self.result.multi_face_landmarks[num__face_index],self.mp_face_mesh.FACEMESH_TESSELATION)
-            return 
-        h,w,c = img.shape
-        for lmIndex,lm in enumerate(landmarks):
-            if lmIndex in lmList:
-                # landmark_x = lm.x * w
-                # landmark_y = lm.y * h
-                # landmark_z = lm.z * w #documentary said so according to the tutorial guy, don't fuckin see it in the documentary though
-                pixel_cor = get_pixel_coordinates(lm.x,lm.y,w,h)
-                cv.circle(img, pixel_cor , 2, (0,0,255), cv.FILLED)
-
 class BlinkingDetector():
     def distance(self,point1,point2):
         dist = sum( [ (i-j)**2 for i,j in zip(point1,point2) ] ) **0.5
@@ -99,15 +83,6 @@ class BlinkingDetector():
         Avg_EAR = (left_EAR+right_EAR) / 2.0
         return Avg_EAR, (left_lm_cor,right_lm_cor)
     
-    def getCoordinate(self,lmList,targetLandmarksList, frame_width, frame_height):
-        get_pixel_coordinates = mp.solutions.drawing_utils._normalized_to_pixel_coordinates
-        # Get the distance of needed point
-        coords_points = []
-        for i in targetLandmarksList:
-            lm = lmList[i]
-            cor = get_pixel_coordinates(lm.x,lm.y,frame_width,frame_height)
-            coords_points.append(cor)
-        return coords_points
 
 class Utility():
     def __init__(self) -> None:
@@ -116,14 +91,30 @@ class Utility():
     
     def getCoordinate(self, lmList, targetLandmarksList, frame_width, frame_height):
         get_pixel_coordinates = self.utils._normalized_to_pixel_coordinates
-        # Get the distance of needed point
         coords_points = []
         for i in targetLandmarksList:
             lm = lmList[i]
             cor = get_pixel_coordinates(lm.x,lm.y,frame_width,frame_height)
             coords_points.append(cor)
         return coords_points
-
+    # Note the previous version account for the fact that it can only draw 1 face due to findLandmarks only return 1 face so... yeah, might impliment might not
+    '''
+        def drawLandmarks(self,img,lmList,landmarks, num_face = 1,draw_all = False):
+        get_pixel_coordinates = self.mp_draw._normalized_to_pixel_coordinates
+        # Multi_face_landmark can detect multiple face and put into an array with each index a face
+        num__face_index = num_face - 1
+        if draw_all:
+            self.mp_draw.draw_landmarks(img,self.result.multi_face_landmarks[num__face_index],self.mp_face_mesh.FACEMESH_TESSELATION)
+            return 
+        h,w,c = img.shape
+        for lmIndex,lm in enumerate(landmarks):
+            if lmIndex in lmList:
+                # landmark_x = lm.x * w
+                # landmark_y = lm.y * h
+                # landmark_z = lm.z * w #documentary said so according to the tutorial guy, don't fuckin see it in the documentary though
+                pixel_cor = get_pixel_coordinates(lm.x,lm.y,w,h)
+                cv.circle(img, pixel_cor , 2, (0,0,255), cv.FILLED)
+    '''
     def drawLandmarks(self, img, lmList, targetlandmarksList, num_face = 1, draw_all = False):
         if draw_all:
             self.utils.draw_landmarks(img, lmList, self.mp_face_mesh.FACEMESH_TESSLATION)

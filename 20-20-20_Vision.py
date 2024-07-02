@@ -1,5 +1,5 @@
 import FaceModule as Fm
-from eye import Eye
+# from eye import Eye
 import numpy as np
 from mediapipe import solutions as mp
 import cv2 as cv
@@ -45,7 +45,7 @@ if EAR_value > 0.2:
 
 cor = utils.getCoordinate(landmarksList,all_iris_point,w,h)
 print(cor)
-faceDetector.drawLandmarks(img,all_iris_point,landmarksList) 
+utils.drawLandmarks(img,landmarksList,all_iris_point) 
 cv.imshow("test",img)
 cv.waitKey(0)
 
